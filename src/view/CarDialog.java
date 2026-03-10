@@ -1,6 +1,9 @@
 package view;
 
 import controller.CarController;
+import controller.ModelController;
+import controller.RentalOfficeController;
+import model.RentalOffice;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,10 +11,15 @@ import java.util.Scanner;
 public class CarDialog {
 
     private CarController carController;
+    private ModelController modelController;
+    private RentalOfficeController rentalOfficeController;
     private Scanner scanner;
 
     public CarDialog(){
         carController = new CarController();
+        modelController = new ModelController();
+        rentalOfficeController = new RentalOfficeController();
+
     };
 
     public void getStarted(){
@@ -28,8 +36,10 @@ public class CarDialog {
                     scanner.nextLine();
                     System.out.println("LicensePlate: ");
                     String licensePlate = scanner.nextLine();
+                    System.out.println(modelController.findAll());
                     System.out.println("IdModel: ");
                     Long idModel = scanner.nextLong();
+                    System.out.println(rentalOfficeController.findAll());
                     System.out.println("IdRentalOffice: ");
                     Long idRentalOffice = scanner.nextLong();
                     carController.add(licensePlate, idModel, idRentalOffice);
@@ -44,8 +54,10 @@ public class CarDialog {
                     scanner.nextLine();
                     System.out.println("LicensePlate: ");
                     String licensePlate = scanner.nextLine();
+                    System.out.println(modelController.findAll());
                     System.out.println("IdModel: ");
                     Long idModel = scanner.nextLong();
+                    System.out.println(rentalOfficeController.findAll());
                     System.out.println("IdRentalOffice: ");
                     Long idRentalOffice = scanner.nextLong();
                     carController.update((long) id, licensePlate, (long)idModel, (long) idRentalOffice);
