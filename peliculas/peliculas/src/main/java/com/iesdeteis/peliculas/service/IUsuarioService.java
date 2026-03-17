@@ -6,13 +6,11 @@ import java.util.List;
 
 public interface IUsuarioService {
 
-  public List<Usuario> findAll();
-  public Usuario findById(Long id);
-  public void save(String nombre, String mail);
-  public void deleteById(Long id);
+  List<Usuario> findAll();
 
+  Usuario findById(Long id);
 
+  void save(String nombre, String email);
 
-
-
+  void deleteById(Long id);
 }
