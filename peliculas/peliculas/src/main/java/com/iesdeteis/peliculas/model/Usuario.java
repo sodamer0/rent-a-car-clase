@@ -14,6 +14,9 @@ public class Usuario {
 
   private String email;
 
+  @Column(name = "creado_en")
+  private String creadoEn;
+
   // Getters y Setters
   public Long getId() {
     return id;
@@ -38,4 +41,10 @@ public class Usuario {
   public void setEmail(String email) {
     this.email = email;
   }
+
+  public String getCreado_En() { return creadoEn; }
+
+  public void setCreado_En(String creadoEn) {this.creadoEn = creadoEn;}
+
+
 }

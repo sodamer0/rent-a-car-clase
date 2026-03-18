@@ -1,7 +1,8 @@
 package com.iesdeteis.peliculas.controller;
 
 import com.iesdeteis.peliculas.model.Pelicula;
-import com.iesdeteis.peliculas.service.PeliculaService;
+import com.iesdeteis.peliculas.model.Usuario;
+import com.iesdeteis.peliculas.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,61 +11,50 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/peliculas")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
   @Autowired
-  private PeliculaService peliculaService;
+  private IUsuarioService usuarioService;
 
-  // Obtener todas las películas
+  // Obtener todos los usuarios
   @GetMapping
-  public ResponseEntity<List<Pelicula>> getAllPeliculas() {
-    return new ResponseEntity<>(peliculaService.getAllPeliculas(), HttpStatus.OK);
+  public ResponseEntity<List<Usuario>> getAllUsuarios() {
+    return new ResponseEntity<>(usuarioService.findAll(), HttpStatus.OK);
   }
 
-  // Obtener una película por ID
+  // Obtener un usuario por ID
   @GetMapping("/{id}")
-  public ResponseEntity<Pelicula> getPeliculaById(@PathVariable Long id) {
-    return peliculaService.getPeliculaById(id)
-      .map(pelicula -> new ResponseEntity<>(pelicula, HttpStatus.OK))
-      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-  }
-
-  // Crear una nueva película
-  @PostMapping
-  public ResponseEntity<Pelicula> createPelicula(@RequestBody Pelicula pelicula) {
-    return new ResponseEntity<>(peliculaService.createPelicula(pelicula), HttpStatus.CREATED);
-  }
-
-  // Actualizar una película existente
-  @PutMapping("/{id}")
-  public ResponseEntity<Pelicula> updatePelicula(@PathVariable Long id, @RequestBody Pelicula peliculaDetails) {
-    return peliculaService.updatePelicula(id, peliculaDetails)
-      .map(updatedPelicula -> new ResponseEntity<>(updatedPelicula, HttpStatus.OK))
-      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-  }
-
-  // Eliminar una película por ID
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deletePelicula(@PathVariable Long id) {
-    if (peliculaService.deletePelicula(id)) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } else {
+  public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
+    try {
+      Usuario usuario = usuarioService.findById(id);
+      return new ResponseEntity<>(usuario, HttpStatus.OK);
+    } catch (RuntimeException e) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
   }
 
-  // Filtrar películas por género
-  @GetMapping("/genero/{genero}")
-  public ResponseEntity<List<Pelicula>> getPeliculasByGenero(@PathVariable String genero) {
-    List<Pelicula> peliculas = peliculaService.getPeliculasByGenero(genero);
-    return new ResponseEntity<>(peliculas, HttpStatus.OK);
+  @PostMapping
+  public ResponseEntity<Void> createUsuario(
+      @RequestParam String nombre,
+      @RequestParam String email) {
+    usuarioService.save(nombre, email);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
-  // Filtrar películas por año
-  @GetMapping("/anio/{anio}")
-  public ResponseEntity<List<Pelicula>> getPeliculasByAnio(@PathVariable Integer anio) {
-    List<Pelicula> peliculas = peliculaService.getPeliculasByAnio(anio);
-    return new ResponseEntity<>(peliculas, HttpStatus.OK);
+  // Actualizar un usuario existente
+  @PutMapping("/{id}")
+  public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuarioDetails) {
+    return usuarioService.updatedUsuario(id, usuarioDetails)
+      .map(updatedUsuario -> new ResponseEntity<>(updatedUsuario, HttpStatus.OK))
+      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+    usuarioService.deleteById(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+
 }

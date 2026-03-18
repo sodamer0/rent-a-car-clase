@@ -2,8 +2,10 @@ package com.iesdeteis.peliculas.service;
 
 import com.iesdeteis.peliculas.model.Opinion;
 import com.iesdeteis.peliculas.model.Pelicula;
+import com.iesdeteis.peliculas.model.Usuario;
 import com.iesdeteis.peliculas.repository.OpinionRepository;
 import com.iesdeteis.peliculas.repository.PeliculaRepository;
+import com.iesdeteis.peliculas.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class OpinionService implements IOpinionService {
 
   @Autowired
   private PeliculaRepository peliculaRepository;
+
+  @Autowired
+  private UsuarioRepository usuarioRepository;
 
   @Override
   public List<Opinion> findAll() {
@@ -34,8 +39,13 @@ public class OpinionService implements IOpinionService {
     Pelicula pelicula = peliculaRepository.findById(peliculaId)
       .orElseThrow(() -> new RuntimeException("Película no encontrada con ID: " + peliculaId));
 
+   // Buscamos el Usuario por ID y lo asignamos con setUsuario()
+    Usuario usuario = usuarioRepository.findById(Long.valueOf(usuarioId))
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + usuarioId));
+
+
     Opinion opinion = new Opinion();
-    opinion.setUsuarioId(usuarioId);
+    opinion.setUsuario(usuario);
     opinion.setPelicula(pelicula);
     opinion.setPuntuacion(puntuacion);
     opinion.setComentario(comentario);

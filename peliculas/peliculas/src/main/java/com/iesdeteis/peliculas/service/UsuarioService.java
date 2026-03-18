@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -31,9 +32,19 @@ public class UsuarioService implements IUsuarioService {
     Usuario usuario = new Usuario();
     usuario.setNombre(nombre);
     usuario.setEmail(email);
-    usuario.setCreado_en(LocalDate.now().toString());
+    usuario.setCreado_En(LocalDate.now().toString());  // corregir setCreado_en
     usuarioRepository.save(usuario);
   }
+
+  @Override
+  public Optional<Usuario> updatedUsuario(Long id, Usuario usuarioDetails) {
+    return usuarioRepository.findById(id).map(usuario -> {
+      usuario.setNombre(usuarioDetails.getNombre());
+      usuario.setEmail(usuarioDetails.getEmail());
+      return usuarioRepository.save(usuario);
+    });
+  }
+
 
   @Override
   public void deleteById(Long id) {

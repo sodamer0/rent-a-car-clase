@@ -11,7 +11,7 @@ public interface IOpinionService {
   // Obtener una opinión por ID
   Opinion findById(Long id);
 
-  void save(Opinion opinion);
+  void save(Integer usuarioId, Long peliculaId, Integer puntuacion, String comentario);
 
   // Eliminar una opinión por ID
   void deleteById(Long id);

@@ -6,24 +6,18 @@ import java.util.Optional;
 
 public interface IPeliculaService {
 
-  // Obtener todas las películas
+  // Métodos que usa PeliculaController
+  List<Pelicula> findAll();
+  Pelicula findById(Long id);
+  void save(String titulo, Integer anio, String genero);
+  void deleteById(Long id);
+
+  // Métodos que usa UsuarioController (versión anterior)
   List<Pelicula> getAllPeliculas();
-
-  // Obtener una película por ID
   Optional<Pelicula> getPeliculaById(Long id);
-
-  // Crear una nueva película
   Pelicula createPelicula(Pelicula pelicula);
-
-  // Actualizar una película existente
   Optional<Pelicula> updatePelicula(Long id, Pelicula peliculaDetails);
-
-  // Eliminar una película por ID
   boolean deletePelicula(Long id);
-
-  // Filtrar películas por género
   List<Pelicula> getPeliculasByGenero(String genero);
-
-  // Filtrar películas por año
   List<Pelicula> getPeliculasByAnio(Integer anio);
 }
